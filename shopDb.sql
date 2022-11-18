@@ -222,6 +222,19 @@ CREATE TABLE shop_sales(
     CONSTRAINT shop_sales_shop_fk FOREIGN KEY (shop_id) REFERENCES shop_info(shop_id)
 );
 
+-- Create table for shop product daily purchase;
+
+CREATE TABLE shop_product_purchase(
+    shop_id VARCHAR(250) NOT NULL,
+    product_serial VARCHAR(250) NOT NULL,
+    product_quantity INT NOT NULL,
+    product_purchase_price DECIMAL(10,2) NOT NULL,
+    product_purchase_date DATETIME NOT NULL,
+    CONSTRAINT shop_product_purchase_pk PRIMARY KEY (shop_id, product_serial, product_purchase_date),
+    CONSTRAINT shop_product_purchase_shop_fk FOREIGN KEY (shop_id) REFERENCES shop_info(shop_id),
+    CONSTRAINT shop_product_purchase_product_fk FOREIGN KEY (product_serial) REFERENCES products(product_serial)
+);
+
 -- Creating admin TABLE
 
 CREATE TABLE admin(
@@ -251,6 +264,57 @@ CREATE TABLE customers(
     customer_address VARCHAR(250) NOT NULL,
     CONSTRAINT customer_pk PRIMARY KEY (customer_id)
 );
+
+-- Creating table for warehouse details;
+
+CREATE TABLE warehouse(
+    warehouse_id VARCHAR(250) NOT NULL,
+    warehouse_name VARCHAR(250) NOT NULL,
+    warehouse_address VARCHAR(250) NOT NULL,
+    warehouse_phone VARCHAR(250) NOT NULL,
+    warehouse_email VARCHAR(250) NOT NULL,
+    CONSTRAINT warehouse_pk PRIMARY KEY (warehouse_id)
+);
+
+
+-- Creating table for warehouse products;
+
+CREATE TABLE warehouse_products(
+    warehouse_id VARCHAR(250) NOT NULL,
+    product_serial VARCHAR(250) NOT NULL,
+    product_quantity INT NOT NULL,
+    CONSTRAINT warehouse_products_pk PRIMARY KEY (warehouse_id, product_serial),
+    CONSTRAINT warehouse_products_warehouse_fk FOREIGN KEY (warehouse_id) REFERENCES warehouse(warehouse_id),
+    CONSTRAINT warehouse_products_product_fk FOREIGN KEY (product_serial) REFERENCES products(product_serial)
+);
+
+--create a table for filters
+
+CREATE TABLE filters(
+    filter_id int not null Auto_increment,
+    fiter_title VARCHAR(50) NOT NULL,
+    CONSTRAINT filter_pk PRIMARY KEY(filter_id)
+);
+
+--create a table for filter values;
+
+CREATE TABLE filter_values(
+    filter_id int NOT NULL,
+    filter_value varchar(250) NOT NULL,
+    CONSTRAINT filter_value_pk PRIMARY KEY(filter_id,filter_value),
+    CONSTRAINT filter_value_filter_id FOREIGN KEY(filter_id) REFERENCES filters(filter_id)
+);
+
+CREATE TABLE user_filters (
+ filter_id int NOT NULL,
+ filter_values_id int NOT NULL,
+ user_id VARCHAR(250) NOT NULL,
+ CONSTRAINT user_filter PRIMARY KEY(filter_id,filter_values_id,user_id),
+ CONSTRAINT user_filter_user_fk FOREIGN KEY(filter_id) REFERENCES filters(filter_id),
+ CONSTRAINT user_filter_values_filter_fk FOREIGN KEY(filter_values_id) REFERENCES filter_values(filter_values_id)
+);
+
+
 
 
 
