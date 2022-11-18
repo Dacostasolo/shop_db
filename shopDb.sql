@@ -1,7 +1,5 @@
-CREATE DATABASE bag_shop_db;
-USE bag_shop_db;
 
---creating product catalog;
+USE bag_shop_db;
 
 CREATE TABLE product_categories (
     category_serial VARCHAR(250) NOT NULL,
@@ -22,7 +20,7 @@ CREATE TABLE properties(
     property_serial VARCHAR(250) NOT NULL,
     property_name VARCHAR(250) NOT NULL,
     property_type VARCHAR(250) NOT NULL,
-    CONSTRAINT property_pk PRIMARY KEY (propery_serial,property_name, property_type)
+    CONSTRAINT property_pk PRIMARY KEY (property_serial,property_name, property_type)
 );
 
 CREATE TABLE product_properties(
@@ -34,14 +32,32 @@ CREATE TABLE product_properties(
     CONSTRAINT product_property_fk FOREIGN KEY (product_serial) REFERENCES products(product_serial)
 );
 
+
 CREATE TABLE product_images(
     image_name VARCHAR(250) NOT NULL,
     product_serial VARCHAR(250) NOT NULL,
-    CONSTRAINT product_image_pk PRIMARY KEY (image_name, product_serial),
+    CONSTRAINT product_image_pk PRIMARY KEY ,
     CONSTRAINT product_image_fk FOREIGN KEY (product_serial) REFERENCES products(product_serial)
 );
 
---Creating user TABLE;
+
+CREATE TABLE product_reviews(
+    review_serial VARCHAR(250) NOT NULL,
+    review_text VARCHAR(250) NOT NULL,
+    review_rating DECIMAL(10,2) NOT NULL,
+    product_serial VARCHAR(250) NOT NULL,
+    CONSTRAINT product_review_pk PRIMARY KEY (review_serial, product_serial),
+    CONSTRAINT product_review_fk FOREIGN KEY (product_serial) REFERENCES products(product_serial)
+);
+
+
+CREATE TABLE product_descriptions(
+    description_serial VARCHAR(250) NOT NULL,
+    description_text VARCHAR(250) NOT NULL,
+    product_serial VARCHAR(250) NOT NULL,
+    CONSTRAINT product_description_pk PRIMARY KEY (description_serial, product_serial),
+    CONSTRAINT product_description_fk FOREIGN KEY (product_serial) REFERENCES products(product_serial)
+);
 
 CREATE TABLE users(
     user_id VARCHAR(250) NOT NULL,
@@ -53,7 +69,6 @@ CREATE TABLE users(
     CONSTRAINT user_pk PRIMARY KEY (user_id)
 );
 
---Creating orders TABLE;
 
 CREATE TABLE orders(
     order_id VARCHAR(250) NOT NULL,
@@ -64,8 +79,6 @@ CREATE TABLE orders(
     CONSTRAINT order_user_fk FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
---Creating order_items TABLE;
-
 CREATE TABLE order_items(
     order_id VARCHAR(250) NOT NULL,
     product_serial VARCHAR(250) NOT NULL,
@@ -74,8 +87,6 @@ CREATE TABLE order_items(
     CONSTRAINT order_item_order_fk FOREIGN KEY (order_id) REFERENCES orders(order_id),
     CONSTRAINT order_item_product_fk FOREIGN KEY (product_serial) REFERENCES products(product_serial)
 );
-
---Creating Suppliers TABLE;
 
 CREATE TABLE suppliers(
     supplier_id VARCHAR(250) NOT NULL,
@@ -86,7 +97,6 @@ CREATE TABLE suppliers(
     CONSTRAINT supplier_pk PRIMARY KEY (supplier_id)
 );
 
---Creating supplier_products TABLE;
 
 CREATE TABLE supplier_products(
     supplier_id VARCHAR(250) NOT NULL,
@@ -98,7 +108,6 @@ CREATE TABLE supplier_products(
 );
 
 
--- Creating supply details TABLE;
 
 CREATE TABLE supply_details(
     supply_id VARCHAR(250) NOT NULL,
@@ -110,8 +119,6 @@ CREATE TABLE supply_details(
 );
 
 
--- Creating supply_items TABLE;
-
 CREATE TABLE supply_items(
     supply_id VARCHAR(250) NOT NULL,
     product_serial VARCHAR(250) NOT NULL,
@@ -121,7 +128,6 @@ CREATE TABLE supply_items(
     CONSTRAINT supply_item_product_fk FOREIGN KEY (product_serial) REFERENCES products(product_serial)
 );
 
--- Creating shop info TABLE;
 
 CREATE TABLE shop_info(
     shop_id VARCHAR(250) NOT NULL,
@@ -133,8 +139,6 @@ CREATE TABLE shop_info(
     CONSTRAINT shop_info_pk PRIMARY KEY (shop_id)
 );
 
--- Creating shop orders TABLE;
-
 CREATE TABLE shop_orders(
     order_id VARCHAR(250) NOT NULL,
     order_date DATETIME NOT NULL,
@@ -145,7 +149,6 @@ CREATE TABLE shop_orders(
 );
 
 
--- Creating shop order_items TABLE;
 
 CREATE TABLE shop_order_items(
     order_id VARCHAR(250) NOT NULL,
@@ -155,6 +158,12 @@ CREATE TABLE shop_order_items(
     CONSTRAINT shop_order_item_order_fk FOREIGN KEY (order_id) REFERENCES shop_orders(order_id),
     CONSTRAINT shop_order_item_product_fk FOREIGN KEY (product_serial) REFERENCES products(product_serial)
 );
+
+
+
+
+
+
 
 
 
