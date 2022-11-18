@@ -4,5 +4,3 @@ CREATE TABLE properties(
     property_type VARCHAR(250) NOT NULL,
     CONSTRAINT property_pk PRIMARY KEY (propery_serial, property_name, property_type)
 );
-
--- CREATE DATABASE bag_shop_db;
